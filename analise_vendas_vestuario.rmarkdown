@@ -1,0 +1,31 @@
+---
+title: "Análise - Vendas de Vestuário"
+author: ["José Ramon Severo Alves", "Leonardo Almeida Farias"]
+date: "24/05/2025"
+format: html
+number-sections: true
+lang: pt
+---
+```{r, setup, include=FALSE}
+# Instalar e carregar pacotes de forma segura
+needed <- c("haven","tidyverse","easystats","olsrr","rstatix","flextable")
+missing <- needed[!(needed %in% installed.packages()[,"Package"])]
+if(length(missing)) install.packages(missing, repos = "https://cloud.r-project.org")
+lapply(needed, library, character.only = TRUE)
+
+# Para estabelecer o padrão do documento
+knitr::opts_chunk$set(echo = TRUE)
+
+# Para formatar tabelas
+options(digits = 3)
+set_flextable_defaults(decimal.mark = ",", big.mark = " ")
+
+# Estabelecer tema para gráficos
+theme_set(theme_minimal())
+```
+
+# Introdução
+ Análise estatística do dataset "moda_vestuario_vendas.xlsx", que contém diversas observações sobre vendas de peças de roupas em diferentes períodos de tempo e em diferentes contextos, incluindo dados categóricos e númericos que podem influenciar esse valor.
+
+
+ O principal objetivo deste trabalho é identificar que fatores influenciam o volume de vendas de peças de roupas, através da análise exploratória de dados e da regressão linear simples.
