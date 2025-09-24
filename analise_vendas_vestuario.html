@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt" xml:lang="pt"><head>
 
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.8.24">
@@ -8,7 +8,6 @@
 
 <meta name="author" content="José Ramon Severo Alves">
 <meta name="author" content="Leonardo Almeida Farias">
-<meta name="dcterms.date" content="2026-12-05">
 
 <title>Análise - Vendas de Vestuário</title>
 <style>
@@ -22,6 +21,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -42,10 +76,54 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="fullcontent quarto-light">
+<body class="quarto-light">
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Índice</h2>
+   
+  <ul>
+  <li><a href="#introdução" id="toc-introdução" class="nav-link active" data-scroll-target="#introdução"><span class="header-section-number">1</span> Introdução</a></li>
+  <li><a href="#dados-da-análise" id="toc-dados-da-análise" class="nav-link" data-scroll-target="#dados-da-análise"><span class="header-section-number">2</span> Dados da Análise</a></li>
+  <li><a href="#análises-bivariadas" id="toc-análises-bivariadas" class="nav-link" data-scroll-target="#análises-bivariadas"><span class="header-section-number">3</span> Análises bivariadas</a>
+  <ul class="collapse">
+  <li><a href="#entre-variáveis-numéricas" id="toc-entre-variáveis-numéricas" class="nav-link" data-scroll-target="#entre-variáveis-numéricas"><span class="header-section-number">3.1</span> Entre variáveis numéricas</a></li>
+  <li><a href="#variável-numérica-em-função-de-categórica" id="toc-variável-numérica-em-função-de-categórica" class="nav-link" data-scroll-target="#variável-numérica-em-função-de-categórica"><span class="header-section-number">3.2</span> Variável numérica em função de categórica</a>
+  <ul class="collapse">
+  <li><a href="#análise-entre-vendas-e-a-presença-de-campanha-com-influenciadores" id="toc-análise-entre-vendas-e-a-presença-de-campanha-com-influenciadores" class="nav-link" data-scroll-target="#análise-entre-vendas-e-a-presença-de-campanha-com-influenciadores"><span class="header-section-number">3.2.1</span> Análise entre vendas e a presença de campanha com influenciadores</a></li>
+  <li><a href="#análise-entre-vendas-e-a-estação-análisada" id="toc-análise-entre-vendas-e-a-estação-análisada" class="nav-link" data-scroll-target="#análise-entre-vendas-e-a-estação-análisada"><span class="header-section-number">3.2.2</span> Análise entre vendas e a estação análisada</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#regressão-linear" id="toc-regressão-linear" class="nav-link" data-scroll-target="#regressão-linear"><span class="header-section-number">4</span> Regressão Linear</a>
+  <ul class="collapse">
+  <li><a href="#modelos-lineares" id="toc-modelos-lineares" class="nav-link" data-scroll-target="#modelos-lineares"><span class="header-section-number">4.1</span> Modelos Lineares</a>
+  <ul class="collapse">
+  <li><a href="#modelo-1---investimento-e-alcance" id="toc-modelo-1---investimento-e-alcance" class="nav-link" data-scroll-target="#modelo-1---investimento-e-alcance"><span class="header-section-number">4.1.1</span> Modelo 1 - Investimento e Alcance</a></li>
+  <li><a href="#modelo-2---removendo-alcance" id="toc-modelo-2---removendo-alcance" class="nav-link" data-scroll-target="#modelo-2---removendo-alcance"><span class="header-section-number">4.1.2</span> Modelo 2 - Removendo alcance</a></li>
+  <li><a href="#modelo-3---removendo-investimentos" id="toc-modelo-3---removendo-investimentos" class="nav-link" data-scroll-target="#modelo-3---removendo-investimentos"><span class="header-section-number">4.1.3</span> Modelo 3 - Removendo investimentos</a></li>
+  </ul></li>
+  <li><a href="#escolhendo-o-melhor-modelo" id="toc-escolhendo-o-melhor-modelo" class="nav-link" data-scroll-target="#escolhendo-o-melhor-modelo"><span class="header-section-number">4.2</span> Escolhendo o melhor modelo</a></li>
+  </ul></li>
+  <li><a href="#análisando-o-modelo-escolhido" id="toc-análisando-o-modelo-escolhido" class="nav-link" data-scroll-target="#análisando-o-modelo-escolhido"><span class="header-section-number">5</span> Análisando o modelo escolhido</a>
+  <ul class="collapse">
+  <li><a href="#análise-dos-pressupostos" id="toc-análise-dos-pressupostos" class="nav-link" data-scroll-target="#análise-dos-pressupostos"><span class="header-section-number">5.1</span> Análise dos pressupostos</a>
+  <ul class="collapse">
+  <li><a href="#do-modelo-original" id="toc-do-modelo-original" class="nav-link" data-scroll-target="#do-modelo-original"><span class="header-section-number">5.1.1</span> Do modelo original</a></li>
+  <li><a href="#do-modelo-selecionado" id="toc-do-modelo-selecionado" class="nav-link" data-scroll-target="#do-modelo-selecionado"><span class="header-section-number">5.1.2</span> Do modelo selecionado</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#estimativa" id="toc-estimativa" class="nav-link" data-scroll-target="#estimativa"><span class="header-section-number">6</span> Estimativa</a>
+  <ul class="collapse">
+  <li><a href="#intervalo-de-confiança" id="toc-intervalo-de-confiança" class="nav-link" data-scroll-target="#intervalo-de-confiança"><span class="header-section-number">6.1</span> Intervalo de confiança</a></li>
+  </ul></li>
+  <li><a href="#previsão" id="toc-previsão" class="nav-link" data-scroll-target="#previsão"><span class="header-section-number">7</span> Previsão</a></li>
+  <li><a href="#interpretação-do-modelo" id="toc-interpretação-do-modelo" class="nav-link" data-scroll-target="#interpretação-do-modelo"><span class="header-section-number">8</span> Interpretação do modelo</a></li>
+  <li><a href="#conclusão" id="toc-conclusão" class="nav-link" data-scroll-target="#conclusão"><span class="header-section-number">9</span> Conclusão</a></li>
+  <li><a href="#referências-bibliográficas" id="toc-referências-bibliográficas" class="nav-link" data-scroll-target="#referências-bibliográficas"><span class="header-section-number">10</span> Referências bibliográficas</a></li>
+  </ul>
+</nav>
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -58,7 +136,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="quarto-title-meta">
 
     <div>
-    <div class="quarto-title-meta-heading">Authors</div>
+    <div class="quarto-title-meta-heading">Autores</div>
     <div class="quarto-title-meta-contents">
              <p>José Ramon Severo Alves </p>
              <p>Leonardo Almeida Farias </p>
@@ -66,9 +144,9 @@ ul.task-list li input[type="checkbox"] {
   </div>
     
     <div>
-    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-heading">Data de Publicação</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 5, 2026</p>
+      <p class="date">24 de setembro de 2025</p>
     </div>
   </div>
   
@@ -80,7 +158,643 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="introdução" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Introdução</h1>
+<p>Análise estatística do dataset “moda_vestuario_vendas.xlsx”, que contém diversas observações sobre vendas de peças de roupas em diferentes períodos de tempo e em diferentes contextos, incluindo dados categóricos e númericos que podem influenciar esse valor.</p>
+<p>O principal objetivo deste trabalho é identificar que fatores influenciam o volume de vendas de peças de roupas, através da análise exploratória de dados e da regressão linear simples.</p>
+</section>
+<section id="dados-da-análise" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Dados da Análise</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>dados <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"moda_vestuario_vendas.xlsx"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(dados)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 1,200
+Columns: 13
+$ Vendas                   &lt;dbl&gt; 1335, 1911, 5231, 3297, 3886, 3424, 1790, 252…
+$ Investimento_marketing   &lt;dbl&gt; 55.27, 70.81, 112.20, 84.85, 103.01, 94.43, 6…
+$ Alcance_midias_sociais   &lt;dbl&gt; 509.9, 624.6, 1065.6, 751.8, 895.2, 787.3, 57…
+$ Preco_medio              &lt;dbl&gt; 118.34, 96.96, 96.31, 172.66, 165.07, 108.67,…
+$ Desconto_medio           &lt;dbl&gt; 3.24, 5.66, 11.18, 10.38, 10.07, 11.72, 12.15…
+$ N_skus_ativos            &lt;dbl&gt; 153, 349, 488, 608, 358, 196, 470, 331, 399, …
+$ Estoque_medio            &lt;dbl&gt; 18.80, 38.92, 40.88, 32.50, 53.21, 35.59, 39.…
+$ Satisfacao_clientes      &lt;dbl&gt; 9.05, 8.33, 10.00, 8.42, 7.10, 6.61, 5.90, 6.…
+$ Taxa_devolucao           &lt;dbl&gt; 3.73, 5.61, 2.89, 0.76, 6.34, 5.43, 7.57, 6.7…
+$ Trafego_site             &lt;dbl&gt; 206.7, 363.1, 242.5, 373.8, 350.3, 237.0, 327…
+$ Taxa_conversao_online    &lt;dbl&gt; 2.68, 3.51, 2.93, 2.49, 2.24, 3.75, 0.59, 0.7…
+$ Estacao                  &lt;chr&gt; "Inverno", "Primavera", "Verão", "Primavera",…
+$ Campanha_influenciadores &lt;chr&gt; "Sim", "Não", "Sim", "Não", "Sim", "Não", "Nã…</code></pre>
+</div>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 80%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Nome</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Vendas</td>
+<td>Total de peças vendidas no mês</td>
+</tr>
+<tr class="even">
+<td>Investimento_marketing</td>
+<td>Gastos com marketing no mês, em milhares de reais</td>
+</tr>
+<tr class="odd">
+<td>Alcance_midias_sociais</td>
+<td>Quantidade de pessoas atingidas nas redes sociais, em milhares de pessoas</td>
+</tr>
+<tr class="even">
+<td>Preco_medio</td>
+<td>Preço médio das peças, em reais</td>
+</tr>
+<tr class="odd">
+<td>Desconto_medio</td>
+<td>Desconto médio aplicado sobre o preço médio, em porcentagem</td>
+</tr>
+<tr class="even">
+<td>N_skus_ativos</td>
+<td>Quantidade de SKUs ativas, equivalente ao número de peças diferentes e suas variações em estoque</td>
+</tr>
+<tr class="odd">
+<td>Estoque_medio</td>
+<td>Nível médio de estoque disponível no mês, em milhares de peças</td>
+</tr>
+<tr class="even">
+<td>Satisfacao_clientes</td>
+<td>Índice de satisfação média do cliente, entre 0-10</td>
+</tr>
+<tr class="odd">
+<td>Taxa_devolucao</td>
+<td>Percentual de pedidos devolvidos ou cancelados</td>
+</tr>
+<tr class="even">
+<td>Trafego_site</td>
+<td>Visitas ao site no mês, em milhares de visitas</td>
+</tr>
+<tr class="odd">
+<td>Taxa_conversao_online</td>
+<td>Porcentagem de visitantes que efetivaram uma compra online</td>
+</tr>
+<tr class="even">
+<td>Estacao</td>
+<td>Em qual estação foi feita a análise, outono, inverno, verão ou primavera</td>
+</tr>
+<tr class="odd">
+<td>Campanha_influenciadores</td>
+<td>Se tem ou não campanhas de marketing de influenciadores, booleano.</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">skim</span>(dados))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>── Data Summary ────────────────────────
+                           Values
+Name                       dados 
+Number of rows             1200  
+Number of columns          13    
+_______________________          
+Column type frequency:           
+  character                2     
+  numeric                  11    
+________________________         
+Group variables            None  
 
+── Variable type: character ────────────────────────────────────────────────────
+  skim_variable            n_missing complete_rate min max empty n_unique
+1 Estacao                          0             1   5   9     0        4
+2 Campanha_influenciadores         0             1   3   3     0        2
+  whitespace
+1          0
+2          0
+
+── Variable type: numeric ──────────────────────────────────────────────────────
+   skim_variable          n_missing complete_rate    mean      sd     p0     p25
+ 1 Vendas                         0          1    3022.   823.    680    2459.  
+ 2 Investimento_marketing         0          1      80.2   25.4    -1.72   64.0 
+ 3 Alcance_midias_sociais         0          1     723.   230.    -11.6   573.  
+ 4 Preco_medio                   12          0.99  120.    24.7    45.6   103   
+ 5 Desconto_medio                12          0.99   10.1    4.89   -5.63    6.51
+ 6 N_skus_ativos                  0          1     354.   118.     30     273   
+ 7 Estoque_medio                 12          0.99   40.0   14.9    -2.8    29.8 
+ 8 Satisfacao_clientes           12          0.99    7.47   1.45    2.68    6.51
+ 9 Taxa_devolucao                12          0.99    6.10   2.92    0       4.03
+10 Trafego_site                   0          1     298.    99.4    -9.3   237.  
+11 Taxa_conversao_online          0          1       2.77   0.923   0.2     2.12
+       p50     p75    p100 hist 
+ 1 3005    3581.   5751    ▁▆▇▃▁
+ 2   80.8    98.4   156.   ▁▃▇▅▁
+ 3  728.    883.   1402.   ▁▃▇▅▁
+ 4  119.    137.    199.   ▁▅▇▅▁
+ 5   10.2    13.4    24.3  ▁▃▇▅▁
+ 6  355     436     692    ▁▅▇▅▁
+ 7   39.7    50.0    94.1  ▁▆▇▂▁
+ 8    7.58    8.53   10    ▁▂▆▇▆
+ 9    6.14    8.03   15.9  ▃▇▇▂▁
+10  295.    357.    636.   ▁▅▇▃▁
+11    2.76    3.35    5.97 ▁▆▇▃▁</code></pre>
+</div>
+</div>
+<p>Análisando as 1200 linhas, vemos que os valores numéricos estão entre alcances razoáveis, mas algumas linhas tem valores faltando nas colunas <code>Preco_medio</code>, <code>Desconto_medio</code>, <code>Estoque_medio</code>, <code>Satisfacao_clientes</code> e <code>Trafego_site</code>.Especificamente:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Coluna</th>
+<th>Quantidade de observações faltando</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Preco_medio</td>
+<td>12</td>
+</tr>
+<tr class="even">
+<td>Desconto_medio</td>
+<td>12</td>
+</tr>
+<tr class="odd">
+<td>Estoque_medio</td>
+<td>12</td>
+</tr>
+<tr class="even">
+<td>Satisfacao_clientes</td>
+<td>12</td>
+</tr>
+<tr class="odd">
+<td>Trafego_site</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<p>Para manter a integridade desse dataset relativamente pequeno, escolhemos remover essas linhas incompletas, diminuindo o dataset para ter 1140 linhas.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dados <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(dados)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(dados)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 1,140
+Columns: 13
+$ Vendas                   &lt;dbl&gt; 1335, 1911, 5231, 3297, 3886, 3424, 1790, 252…
+$ Investimento_marketing   &lt;dbl&gt; 55.27, 70.81, 112.20, 84.85, 103.01, 94.43, 6…
+$ Alcance_midias_sociais   &lt;dbl&gt; 509.9, 624.6, 1065.6, 751.8, 895.2, 787.3, 57…
+$ Preco_medio              &lt;dbl&gt; 118.34, 96.96, 96.31, 172.66, 165.07, 108.67,…
+$ Desconto_medio           &lt;dbl&gt; 3.24, 5.66, 11.18, 10.38, 10.07, 11.72, 12.15…
+$ N_skus_ativos            &lt;dbl&gt; 153, 349, 488, 608, 358, 196, 470, 331, 399, …
+$ Estoque_medio            &lt;dbl&gt; 18.80, 38.92, 40.88, 32.50, 53.21, 35.59, 39.…
+$ Satisfacao_clientes      &lt;dbl&gt; 9.05, 8.33, 10.00, 8.42, 7.10, 6.61, 5.90, 6.…
+$ Taxa_devolucao           &lt;dbl&gt; 3.73, 5.61, 2.89, 0.76, 6.34, 5.43, 7.57, 6.7…
+$ Trafego_site             &lt;dbl&gt; 206.7, 363.1, 242.5, 373.8, 350.3, 237.0, 327…
+$ Taxa_conversao_online    &lt;dbl&gt; 2.68, 3.51, 2.93, 2.49, 2.24, 3.75, 0.59, 0.7…
+$ Estacao                  &lt;chr&gt; "Inverno", "Primavera", "Verão", "Primavera",…
+$ Campanha_influenciadores &lt;chr&gt; "Sim", "Não", "Sim", "Não", "Sim", "Não", "Nã…</code></pre>
+</div>
+</div>
+<p>Nossa interpretação desse dataset é que cada linha é referente a uma diferente loja ou site que teve seu dados coletados em algum mês, ou até mesmo a mesma loja em períodos diferentes.</p>
+</section>
+<section id="análises-bivariadas" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Análises bivariadas</h1>
+<section id="entre-variáveis-numéricas" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="entre-variáveis-numéricas"><span class="header-section-number">3.1</span> Entre variáveis numéricas</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>numeric_vars <span class="ot">&lt;-</span> dados <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">where</span>(is.numeric))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(numeric_vars, <span class="at">use =</span> <span class="st">"pairwise.complete.obs"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(cor_matrix)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                             Vendas Investimento_marketing
+Vendas                  1.000000000            0.820761275
+Investimento_marketing  0.820761275            1.000000000
+Alcance_midias_sociais  0.835558225            0.967589069
+Preco_medio             0.030450734            0.046599988
+Desconto_medio         -0.006494389           -0.055251250
+N_skus_ativos           0.008739960            0.019589234
+Estoque_medio          -0.040552317           -0.043702703
+Satisfacao_clientes    -0.010366202           -0.049457274
+Taxa_devolucao          0.003356714            0.009422445
+Trafego_site            0.007744699            0.008776480
+Taxa_conversao_online   0.082967410           -0.010961200
+                       Alcance_midias_sociais  Preco_medio Desconto_medio
+Vendas                           0.8355582251  0.030450734   -0.006494389
+Investimento_marketing           0.9675890686  0.046599988   -0.055251250
+Alcance_midias_sociais           1.0000000000  0.040402527   -0.058350502
+Preco_medio                      0.0404025271  1.000000000    0.025410515
+Desconto_medio                  -0.0583505020  0.025410515    1.000000000
+N_skus_ativos                    0.0289531496  0.022349857   -0.032488814
+Estoque_medio                   -0.0399791692 -0.019514303   -0.011636250
+Satisfacao_clientes             -0.0537672532  0.005036666   -0.001297739
+Taxa_devolucao                   0.0129218646  0.046121034   -0.030950986
+Trafego_site                     0.0179218532  0.004613062    0.001152242
+Taxa_conversao_online            0.0005167121  0.012029476   -0.015561417
+                       N_skus_ativos Estoque_medio Satisfacao_clientes
+Vendas                  0.0087399601  -0.040552317        -0.010366202
+Investimento_marketing  0.0195892341  -0.043702703        -0.049457274
+Alcance_midias_sociais  0.0289531496  -0.039979169        -0.053767253
+Preco_medio             0.0223498568  -0.019514303         0.005036666
+Desconto_medio         -0.0324888140  -0.011636250        -0.001297739
+N_skus_ativos           1.0000000000   0.016389485         0.030821169
+Estoque_medio           0.0163894854   1.000000000         0.022958312
+Satisfacao_clientes     0.0308211690   0.022958312         1.000000000
+Taxa_devolucao          0.0523400757   0.006266208        -0.014859097
+Trafego_site            0.0001002371  -0.053861973         0.014467925
+Taxa_conversao_online  -0.0179546717  -0.066269365         0.001732701
+                       Taxa_devolucao  Trafego_site Taxa_conversao_online
+Vendas                    0.003356714  0.0077446985          0.0829674103
+Investimento_marketing    0.009422445  0.0087764801         -0.0109612001
+Alcance_midias_sociais    0.012921865  0.0179218532          0.0005167121
+Preco_medio               0.046121034  0.0046130617          0.0120294759
+Desconto_medio           -0.030950986  0.0011522423         -0.0155614173
+N_skus_ativos             0.052340076  0.0001002371         -0.0179546717
+Estoque_medio             0.006266208 -0.0538619734         -0.0662693649
+Satisfacao_clientes      -0.014859097  0.0144679246          0.0017327008
+Taxa_devolucao            1.000000000  0.0024234510         -0.0023184420
+Trafego_site              0.002423451  1.0000000000         -0.0162387294
+Taxa_conversao_online    -0.002318442 -0.0162387294          1.0000000000</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>corrplot 0.95 loaded</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(cor_matrix, <span class="at">method =</span> <span class="st">"color"</span>, <span class="at">addCoef.col =</span> <span class="st">"black"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analise_vendas_vestuario_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Encontramos algumas corelações entre nossa variável resposta (<code>Vendas</code>) e as demais, principalmente entre ela, <code>Investimento_marketing</code> e <code>Alcance_midias_sociais</code>, com valores de 82% e 84% respectivamente. Surpreendetemente as demais colunas tem correlações <strong>extremamente fracas</strong> com <code>Vendas</code>, indicando que não afetam o volume de vendas significativamente.</p>
+<p>Além disso, encontramos uma correlação <strong>extremamente forte</strong> entre <code>Investimento_marketing</code> e <code>Alcance_midias_sociais</code>, de 97%. Isso indica multicolinearidade, então essas variáveis tem quase a mesma informação.</p>
+</section>
+<section id="variável-numérica-em-função-de-categórica" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="variável-numérica-em-função-de-categórica"><span class="header-section-number">3.2</span> Variável numérica em função de categórica</h2>
+<section id="análise-entre-vendas-e-a-presença-de-campanha-com-influenciadores" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="análise-entre-vendas-e-a-presença-de-campanha-com-influenciadores"><span class="header-section-number">3.2.1</span> Análise entre vendas e a presença de campanha com influenciadores</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dados, <span class="fu">aes</span>(<span class="at">x =</span> Campanha_influenciadores, <span class="at">y =</span> Vendas)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analise_vendas_vestuario_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A análise bivariada entre vendas e presença de campanha com influencers evidencia um leve aumento nas vendas, não tem influência sensível sobre a dispersão dos dados entretanto.</p>
+</section>
+<section id="análise-entre-vendas-e-a-estação-análisada" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="análise-entre-vendas-e-a-estação-análisada"><span class="header-section-number">3.2.2</span> Análise entre vendas e a estação análisada</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dados, <span class="fu">aes</span>(<span class="at">x =</span> Estacao, <span class="at">y =</span> Vendas)) <span class="sc">+</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analise_vendas_vestuario_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Já a análise bivariada entre vendas e estações do ano temos uma grande diferença dados de cada categoria. No inverno tem uma dispersão menor, uma mediana menor, e menos vendas quando comparada com as outras estações.</p>
+<p>No outono é perceptível que a mediana está na parte superior dos dados, com uma baixa e desigual dispersão de dados e a quantidade de vendas está ainda menor que a do inverno.</p>
+<p>Na primavera, em contraste com o inverno temos uma mediana baixa, uma dispersão de dados maior e também desigual. A quantidade de vendas em comparação com outono e inverno é bem maior.</p>
+<p>No verão temos uma grande dispersão entre os dados e uma mediana no meio. A quantidade de vendas em comparação com as estações de outono e inverno são bem maiores.</p>
+</section>
+</section>
+</section>
+<section id="regressão-linear" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Regressão Linear</h1>
+<section id="modelos-lineares" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="modelos-lineares"><span class="header-section-number">4.1</span> Modelos Lineares</h2>
+<section id="modelo-1---investimento-e-alcance" class="level3" data-number="4.1.1">
+<h3 data-number="4.1.1" class="anchored" data-anchor-id="modelo-1---investimento-e-alcance"><span class="header-section-number">4.1.1</span> Modelo 1 - Investimento e Alcance</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>modelo1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Vendas <span class="sc">~</span> Investimento_marketing <span class="sc">+</span> Alcance_midias_sociais <span class="sc">+</span> Taxa_conversao_online,<span class="at">data=</span>dados)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo1)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Vendas ~ Investimento_marketing + Alcance_midias_sociais + 
+    Taxa_conversao_online, data = dados)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1572.60  -301.74   -25.16   290.87  2268.31 
+
+Coefficients:
+                       Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)            635.5038    59.1906  10.737  &lt; 2e-16 ***
+Investimento_marketing   6.7296     2.0583   3.270  0.00111 ** 
+Alcance_midias_sociais   2.2667     0.2272   9.977  &lt; 2e-16 ***
+Taxa_conversao_online   75.3408    14.2458   5.289 1.48e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 445.7 on 1136 degrees of freedom
+Multiple R-squared:  0.7077,    Adjusted R-squared:  0.7069 
+F-statistic: 916.9 on 3 and 1136 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>O modelo 1 tem R² igual a 0,7, ou seja 70% da variação no volume de vendas é explicado por apenas essas duas variáveis.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(modelo1 <span class="sc">%&gt;%</span> <span class="fu">tbl_regression</span>() <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>())</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 4
+  `**Characteristic**`   `**Beta**` `**95% CI**` `**p-value**`
+  &lt;chr&gt;                  &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;        
+1 Investimento_marketing 6.7        2.7, 11      0.001        
+2 Alcance_midias_sociais 2.3        1.8, 2.7     &lt;0.001       
+3 Taxa_conversao_online  75         47, 103      &lt;0.001       </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(modelo1)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Investimento_marketing Alcance_midias_sociais  Taxa_conversao_online 
+             15.713379              15.711495               1.002064 </code></pre>
+</div>
+</div>
+<p>VIF é uma medida que testa multicolinearidade em modelos, sendo valores acima de 10 considerados problemas sérios [2].</p>
+<p>A Taxa_conversao_online apresenta um VIF muito próximo de 1, indicando que não tem multicolinearidade com as outras. Já as duas outras medidas usadas no modelo 1 apresentam VIFs extremamente altos de cerca de 15,68, indicando novamente a grande correlação entre essas variáveis, que pode ser problemática.</p>
+<p>Esse resultado confirma o que, intuitivamente, já era de se esperar, que Alcance_midias_sociais e Investimento_marketing fossem relacionadas, já que uma deve levar a outra.</p>
+<p>Para simplificar o modelo, evitar redundâncias e aumentar a estabilidade do modelo, vamos análisar qual das variáveis devemos remover.</p>
+</section>
+<section id="modelo-2---removendo-alcance" class="level3" data-number="4.1.2">
+<h3 data-number="4.1.2" class="anchored" data-anchor-id="modelo-2---removendo-alcance"><span class="header-section-number">4.1.2</span> Modelo 2 - Removendo alcance</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>modelo2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> Vendas <span class="sc">~</span> Investimento_marketing <span class="sc">+</span> Taxa_conversao_online, <span class="at">data =</span> dados)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo2)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Vendas ~ Investimento_marketing + Taxa_conversao_online, 
+    data = dados)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1604.90  -305.00   -27.26   300.93  2747.12 
+
+Coefficients:
+                       Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)            664.0970    61.6301   10.78  &lt; 2e-16 ***
+Investimento_marketing  26.6014     0.5413   49.14  &lt; 2e-16 ***
+Taxa_conversao_online   81.6015    14.8359    5.50 4.68e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 464.6 on 1137 degrees of freedom
+Multiple R-squared:  0.6821,    Adjusted R-squared:  0.6815 
+F-statistic:  1220 on 2 and 1137 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>Retirando o alcance temos uma pequena diferença, trazendo um R² ligeiramente menor de 0.6815.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(modelo2)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Investimento_marketing  Taxa_conversao_online 
+               1.00012                1.00012 </code></pre>
+</div>
+</div>
+<p>O VIF do modelo 2 é significante mente menor que o do modelo 3.</p>
+<p>Em <code>Investimento_marketing</code> e em <code>Taxa_conversao_online</code> agora temos um VIF muito proximo de 1, indicando que eles não tem correlação. Esse pode ser um modelo melhor já que evita usar variáveis que possuem correlação.</p>
+</section>
+<section id="modelo-3---removendo-investimentos" class="level3" data-number="4.1.3">
+<h3 data-number="4.1.3" class="anchored" data-anchor-id="modelo-3---removendo-investimentos"><span class="header-section-number">4.1.3</span> Modelo 3 - Removendo investimentos</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>modelo3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> Vendas <span class="sc">~</span> Alcance_midias_sociais <span class="sc">+</span> Taxa_conversao_online, <span class="at">data =</span> dados)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo3)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Vendas ~ Alcance_midias_sociais + Taxa_conversao_online, 
+    data = dados)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1553.04  -300.66   -21.46   281.84  2857.15 
+
+Coefficients:
+                        Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)            661.17829   58.91691  11.222  &lt; 2e-16 ***
+Alcance_midias_sociais   2.98546    0.05756  51.868  &lt; 2e-16 ***
+Taxa_conversao_online   73.22684   14.29163   5.124 3.52e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 447.6 on 1137 degrees of freedom
+Multiple R-squared:  0.705, Adjusted R-squared:  0.7045 
+F-statistic:  1358 on 2 and 1137 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>Removendo os investimentos também, temos um R² de 0.705.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(modelo3)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Alcance_midias_sociais  Taxa_conversao_online 
+                     1                      1 </code></pre>
+</div>
+</div>
+<p>No modelo 3 também os valores de VIF foram ainda menores que os modelos do modelo 2, também muito próximos de 1.</p>
+</section>
+</section>
+<section id="escolhendo-o-melhor-modelo" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="escolhendo-o-melhor-modelo"><span class="header-section-number">4.2</span> Escolhendo o melhor modelo</h2>
+<p>O modelo 3 tem praticamente a mesma significância do modelo 1 (R² = 0,7045 no modelo 3 vs R² = 0,7069 no modelo 1) que é consideravelmente maior que a do modelo 2 (R² = 0,6734).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(modelo2, modelo3)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        df      AIC
+modelo2  4 17242.28
+modelo3  4 17157.20</code></pre>
+</div>
+</div>
+<p>AIC(Akaike Information Criterion) é uma das principais ferramentas de comparação entre modelos no mesmo dataset, sendo uma “[…] medida surpreendentemente simples da variância média de valores fora da amostra”[1] &gt; O menor AIC é melhor, indicando que o modelo perdeu menos informação em relação ao outro.</p>
+<p>Com ela, temos outros indício de que o modelo 3 é o mais adequado para a situação.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span> (<span class="fu">anova</span>(modelo1, modelo3))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Classes 'anova' and 'data.frame':   2 obs. of  6 variables:
+ $ Res.Df   : num  1136 1137
+ $ RSS      : num  2.26e+08 2.28e+08
+ $ Df       : num  NA -1
+ $ Sum of Sq: num  NA -2123869
+ $ F        : num  NA 10.7
+ $ Pr(&gt;F)   : num  NA 0.00111
+ - attr(*, "heading")= chr [1:2] "Analysis of Variance Table\n" "Model 1: Vendas ~ Investimento_marketing + Alcance_midias_sociais + Taxa_conversao_online\nModel 2: Vendas ~ Al"| __truncated__</code></pre>
+</div>
+</div>
+<p>Em contraponto, o teste ANOVA resultou em um p muito menor que 5%, indicando que o modelo 1(mais complexo) tem uma capacidade maior de explicar as vendas em comparação ao modelo 3, como vimos anteriormente com a comparação de seus R².</p>
+<p>Entretanto, o ANOVA testa apenas se o modelo é melhor para explicar a variável resposta do que utilizar a média, não considerando os possíveis malefícios de usar um modelo mais complexo pode trazer.</p>
+<p>Como visto nos testes anteriores, o modelo 1 ganha pouca melhoria no ajuste(&lt;1%) com esse aumento de complexidade, logo vamos esolher o modelo 3 para continuar nossa análise.</p>
+</section>
+</section>
+<section id="análisando-o-modelo-escolhido" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Análisando o modelo escolhido</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(modelo3)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analise_vendas_vestuario_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analise_vendas_vestuario_files/figure-html/unnamed-chunk-18-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analise_vendas_vestuario_files/figure-html/unnamed-chunk-18-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analise_vendas_vestuario_files/figure-html/unnamed-chunk-18-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="análise-dos-pressupostos" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="análise-dos-pressupostos"><span class="header-section-number">5.1</span> Análise dos pressupostos</h2>
+<section id="do-modelo-original" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="do-modelo-original"><span class="header-section-number">5.1.1</span> Do modelo original</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(modelo1, <span class="at">title_size =</span> <span class="dv">10</span>, <span class="at">base_size =</span> <span class="dv">8</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analise_vendas_vestuario_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol type="1">
+<li>Verificação Preditiva Posterior</li>
+</ol>
+<p>A curva dos dados preditos (linha verde) está razoavelmente próxima da curva dos dados observados (linha azul).Tendo assim uma boa adequação geral do modelo.</p>
+<ol start="2" type="1">
+<li>Linearidade</li>
+</ol>
+<p>Os pontos estão bem distribuídos em torno da linha zero. A linha de tendência verde está quase perfeitamente plana</p>
+<ol start="3" type="1">
+<li>Homocedasticidade</li>
+</ol>
+<p>A dispersão dos pontos é bastante uniforme da esquerda para a direita. A linha de tendência verde é praticamente horizontal. Não há o formato de “cone” ou “funil” que indicaria um problema (heterocedasticidade).</p>
+<ol start="4" type="1">
+<li>Normalidade dos Resíduos</li>
+</ol>
+<p>Os pontos se alinham quase perfeitamente com a linha reta. Há um pequeno desvio nos extremos, o que é muito comum e geralmente não é preocupante em conjuntos de dados grandes.</p>
+<ol start="5" type="1">
+<li>Influência de Observações</li>
+</ol>
+<p>Existem alguns pontos numerados que se destacam por terem maior alavancagem (Leverage) ou resíduos maiores, como o ponto 1076. No entanto, todos os pontos estão bem dentro das linhas de contorno, o que significa que nenhum deles é considerado perigosamente influente.</p>
+<ol start="6" type="1">
+<li>Multicolinearidade</li>
+</ol>
+<p>Mostra novamente os erros que já vimos, com um VIF <strong>extremamente alto</strong> de cerca de 15, dificultando a interpretação com o modelo.</p>
+</section>
+<section id="do-modelo-selecionado" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="do-modelo-selecionado"><span class="header-section-number">5.1.2</span> Do modelo selecionado</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(modelo3, <span class="at">title_size =</span> <span class="dv">10</span>, <span class="at">base_size =</span> <span class="dv">8</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analise_vendas_vestuario_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Como o modelo 3 é simples, o gráfico de VIF foi omitido, justamente por não ter multicolinearidade nesse modelo, resolvendo esse problema em relação ao primeiro.</p>
+<p>Nas influências de observações o único ponto que se encontrava fora da curva agora está contido nela, mostrando como o modelo 3 é mais estável, exatamente o que queríamos.</p>
+<p>Fora essas melhorias, o modelo 3 se mantém tão bom quanto o primeiro nas outras métricas, justificando novamente sua escolha.</p>
+</section>
+</section>
+</section>
+<section id="estimativa" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Estimativa</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>estimativa <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Alcance_midias_sociais =</span> <span class="dv">1000</span>, <span class="at">Taxa_conversao_online =</span> <span class="dv">1</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(modelo3, <span class="at">newdata =</span> estimativa, <span class="at">interval =</span> <span class="st">"confidence"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      fit      lwr     upr
+1 3719.86 3655.861 3783.86</code></pre>
+</div>
+</div>
+<p>Considerando uma périodo de tempo onde foram atingidas 1000000 pessoas nas redes sociais, se espera que aproximadamente 3849 peças sejam vendidas nesse mês, com 95% de confiança se espera que o valor esteja entre 3808 e 3890.</p>
+<section id="intervalo-de-confiança" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="intervalo-de-confiança"><span class="header-section-number">6.1</span> Intervalo de confiança</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>limite</th>
+<th>valor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>inferior</td>
+<td>3808</td>
+</tr>
+<tr class="even">
+<td>superior</td>
+<td>3890</td>
+</tr>
+</tbody>
+</table>
+<p>Esse intervalo de 3808 a 3890 expressa a incerteza em torno da média esperada do consumo para domicílios com as características especificadas. Ele reflete apenas o erro associado à estimativa da média, e não à previsão de um valor individual.</p>
+</section>
+</section>
+<section id="previsão" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Previsão</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>estimativa <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Alcance_midias_sociais =</span> <span class="dv">1000</span>, <span class="at">Taxa_conversao_online =</span> <span class="dv">1000</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(modelo3, <span class="at">newdata =</span> estimativa, <span class="at">interval =</span> <span class="st">"prediction"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       fit      lwr      upr
+1 76873.48 48896.25 104850.7</code></pre>
+</div>
+</div>
+<p>Com 95% de confiança, espera-se que a quantidade de vendas de uma empresa com as características da seção 6 esteja entre 2960 e 4737. Esse intervalo de predição é mais amplo do que o intervalo de confiança para a média, pois leva em consideração a variabilidade individual das empresas, não apenas a incerteza da média.</p>
+</section>
+<section id="interpretação-do-modelo" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Interpretação do modelo</h1>
+<p>Os resultados expostos mostram que todas as variáveis selecionadas para o modelo são estatísticamente significativas ao nível de 5%, resultando em um modelo com R² ajustado de 0.705, que indica que 70% da variabilidade no volume de vendar é explicado pelas variáveis no modelo. Esse valor é consideravelmente alto especialmente considerando quantas variáveis possíveis existiam no dataset, escolhemos um conjunto muito pequeno e significativo.</p>
+<p>Análisando as variáveis incluídas: - <code>Alcance_midias_sociais</code> é a variável mais relevante para o modelo, mostrando como é importante esse meio de marketing para as lojas.</p>
+<ul>
+<li><code>Taxa_conversao_online</code> tem uma influência bem menor, mas ainda significativa, possivelmente indicando que as pessoas compram mais online do que presencial.</li>
+</ul>
+<p>Além disso, a análise dos pressupostos confirma que o modelo atende a todos os critério quase perfeitamente, sendo linear, independente de erros, atendendo a homocedasticidade e normalidade dos resíduos, com quase total ausência de multicolinearidade.</p>
+</section>
+<section id="conclusão" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Conclusão</h1>
+<p>O relatório teve como objetivo analisar os fatores que influenciam no volume de vendas de peças de roupas. Após a limpeza de dados foram selecionadas variáveis explicativas com base em critérios estatísticos e teóricos.</p>
+<p>O modelo de regressão linear múltipla selecionado (modelo 3) apresenta um bom ajuste (R² ajustado de 0.705) e atende aos pressupostos do modelo. A variável <code>Alcance_midias_sociais</code> apresenta uma influência significativa sobre o volume de vendas, com a variável <code>Taxa_conversao_online</code> tendo um impacto menor, mas considerável.</p>
+<p>Por último, fizemos ainda estimativas e predições com base no modelo final, fornecendo interpretações pontuais e intervalares</p>
+</section>
+<section id="referências-bibliográficas" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> Referências bibliográficas</h1>
+<ol type="1">
+<li><em>McElreath, Richard (2016). Statistical Rethinking: A Bayesian Course with Examples in R and Stan. [S.l.]: CRC Press. p.&nbsp;189. ISBN 978-1-4822-5344-3. AIC provides a surprisingly simple estimate of the average out-of-sample deviance.</em> 2.https://www.datacamp.com/pt/tutorial/variance-inflation-factor</li>
+</ol>
+</section>
 
 </main>
 <!-- /main column -->
@@ -109,12 +823,12 @@ ul.task-list li input[type="checkbox"] {
       // flash "checked"
       button.classList.add('code-copy-button-checked');
       var currentTitle = button.getAttribute("title");
-      button.setAttribute("title", "Copied!");
+      button.setAttribute("title", "Copiada");
       let tooltip;
       if (window.bootstrap) {
         button.setAttribute("data-bs-toggle", "tooltip");
         button.setAttribute("data-bs-placement", "left");
-        button.setAttribute("data-bs-title", "Copied!");
+        button.setAttribute("data-bs-title", "Copiada");
         tooltip = new bootstrap.Tooltip(button, 
           { trigger: "manual", 
             customClass: "code-copy-button-tooltip",

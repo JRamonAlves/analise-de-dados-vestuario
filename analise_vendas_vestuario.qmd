@@ -1,31 +1,321 @@
 ---
 title: "Análise - Vendas de Vestuário"
 author: ["José Ramon Severo Alves", "Leonardo Almeida Farias"]
-date: "24/05/2025"
+date: "09/24/2025"
+toc: true
 format: html
 number-sections: true
 lang: pt
 ---
-```{r, setup, include=FALSE}
-# Instalar e carregar pacotes de forma segura
-needed <- c("haven","tidyverse","easystats","olsrr","rstatix","flextable")
-missing <- needed[!(needed %in% installed.packages()[,"Package"])]
-if(length(missing)) install.packages(missing, repos = "https://cloud.r-project.org")
-lapply(needed, library, character.only = TRUE)
+```{r, include=FALSE}
+required_pkgs <- c(
+    "readxl","dplyr","ggplot2","skimr","see","gtsummary",
+    "performance","ggrepel","car","curl","xml2","V8",
+    "juicyjuice","nloptr","SparseM","minqa","corrplot","broom.helpers"
+)
+missing_pkgs <- required_pkgs[!vapply(required_pkgs, requireNamespace, logical(1), quietly = TRUE)]
+if (length(missing_pkgs)) {
+    message(
+        "Missing packages: ", paste(missing_pkgs, collapse = ", "),
+        "\nInstall them once with: install.packages(missing_pkgs, repos = 'https://cloud.r-project.org')",
+        "\nOr initialize a project library with renv: install.packages('renv'); renv::init()"
+    )
+}
 
-# Para estabelecer o padrão do documento
-knitr::opts_chunk$set(echo = TRUE)
+# Load only (do not install here)
+invisible(lapply(c("readxl","dplyr","ggplot2","skimr","see","gtsummary",
+                                     "performance","ggrepel","car"), function(pkg) {
+    if (requireNamespace(pkg, quietly = TRUE)) library(pkg, character.only = TRUE)
+}))
 
-# Para formatar tabelas
-options(digits = 3)
-set_flextable_defaults(decimal.mark = ",", big.mark = " ")
-
-# Estabelecer tema para gráficos
-theme_set(theme_minimal())
+# Enable knitr chunk caching to speed up repeated previews — clear cache to recompute when needed
+if (requireNamespace("knitr", quietly = TRUE)) knitr::opts_chunk$set(cache = TRUE)
 ```
 
 # Introdução
  Análise estatística do dataset "moda_vestuario_vendas.xlsx", que contém diversas observações sobre vendas de peças de roupas em diferentes períodos de tempo e em diferentes contextos, incluindo dados categóricos e númericos que podem influenciar esse valor.
 
 
+
  O principal objetivo deste trabalho é identificar que fatores influenciam o volume de vendas de peças de roupas, através da análise exploratória de dados e da regressão linear simples.
+
+# Dados da Análise
+```{r}
+dados <- read_excel("moda_vestuario_vendas.xlsx")
+glimpse(dados)
+```
+
+| Nome                     | Descrição                                                                                        |
+| ------------------------ | ------------------------------------------------------------------------------------------------ |
+| Vendas                   | Total de peças vendidas no mês                                                                   |
+| Investimento_marketing   | Gastos com marketing no mês, em milhares de reais                                                |
+| Alcance_midias_sociais   | Quantidade de pessoas atingidas nas redes sociais, em milhares de pessoas                        |
+| Preco_medio              | Preço médio das peças, em reais                                                                  |
+| Desconto_medio           | Desconto médio aplicado sobre o preço médio, em porcentagem                                      |
+| N_skus_ativos            | Quantidade de SKUs ativas, equivalente ao número de peças diferentes e suas variações em estoque |
+| Estoque_medio            | Nível médio de estoque disponível no mês, em milhares de peças                                   |
+| Satisfacao_clientes      | Índice de satisfação média do cliente, entre 0-10                                                |
+| Taxa_devolucao           | Percentual de pedidos devolvidos ou cancelados                                                   |
+| Trafego_site             | Visitas ao site no mês, em milhares de visitas                                                   |
+| Taxa_conversao_online    | Porcentagem de visitantes que efetivaram uma compra online                                       |
+| Estacao                  | Em qual estação foi feita a análise, outono, inverno, verão ou primavera                         |
+| Campanha_influenciadores | Se tem ou não campanhas de marketing de influenciadores, booleano.                               |
+
+```{r}
+print(skim(dados))
+```
+
+Análisando as 1200 linhas, vemos que os valores numéricos estão entre alcances razoáveis, mas algumas linhas tem valores faltando nas colunas `Preco_medio`, `Desconto_medio`, `Estoque_medio`, `Satisfacao_clientes` e `Trafego_site`.Especificamente:
+
+| Coluna              | Quantidade de observações faltando |
+| ------------------- | ---------------------------------- |
+| Preco_medio         | 12                                 |
+| Desconto_medio      | 12                                 |
+| Estoque_medio       | 12                                 |
+| Satisfacao_clientes | 12                                 |
+| Trafego_site        | 12                                 |
+
+Para manter a integridade desse dataset relativamente pequeno, escolhemos remover essas linhas incompletas, diminuindo o dataset para ter 1140 linhas.
+
+```{r} 
+dados <- na.omit(dados)
+glimpse(dados)
+```
+
+Nossa interpretação desse dataset é que cada linha é referente a uma diferente loja ou site que teve seu dados coletados em algum mês, ou até mesmo a mesma loja em períodos diferentes.
+
+# Análises bivariadas
+
+## Entre variáveis numéricas
+
+```{r} 
+numeric_vars <- dados %>% select(where(is.numeric))
+cor_matrix <- cor(numeric_vars, use = "pairwise.complete.obs")
+print(cor_matrix)
+```
+
+```{r}
+library(corrplot)
+corrplot(cor_matrix, method = "color", addCoef.col = "black")
+```
+
+Encontramos algumas corelações entre nossa variável resposta (`Vendas`) e as demais, principalmente entre ela, `Investimento_marketing` e `Alcance_midias_sociais`, com valores de 82% e 84% respectivamente. Surpreendetemente as demais colunas tem correlações **extremamente fracas** com `Vendas`, indicando que não afetam o volume de vendas significativamente.
+
+Além disso, encontramos uma correlação **extremamente forte** entre `Investimento_marketing` e `Alcance_midias_sociais`, de 97%. Isso indica multicolinearidade, então essas variáveis tem quase a mesma informação.
+
+## Variável numérica em função de categórica
+
+### Análise entre vendas e a presença de campanha com influenciadores
+
+```{r}
+ggplot(dados, aes(x = Campanha_influenciadores, y = Vendas)) +
+geom_boxplot() + theme_minimal()
+```
+
+A análise bivariada entre vendas e presença de campanha com influencers evidencia um leve aumento nas vendas, não tem influência sensível sobre a dispersão dos dados entretanto.
+
+### Análise entre vendas e a estação análisada
+
+```{r}
+ggplot(dados, aes(x = Estacao, y = Vendas)) +
+geom_boxplot() + theme_minimal()
+```
+
+Já a análise bivariada entre vendas e estações do ano temos uma grande diferença dados de cada categoria. No inverno tem uma dispersão menor, uma mediana menor, e menos vendas quando comparada com as outras estações.
+
+No outono é perceptível que a mediana está na parte superior dos dados, com uma baixa e desigual dispersão de dados e a quantidade de vendas está ainda menor que a do inverno.
+
+Na primavera, em contraste com o inverno temos uma mediana baixa, uma dispersão de dados maior e também desigual. A quantidade de vendas em comparação com outono e inverno é bem maior.
+
+No verão temos uma grande dispersão entre os dados e uma mediana no meio. A quantidade de vendas em comparação com as estações de outono e inverno são bem maiores.
+
+# Regressão Linear
+
+## Modelos Lineares
+
+### Modelo 1 - Investimento e Alcance
+
+```{r}
+modelo1 <- lm(Vendas ~ Investimento_marketing + Alcance_midias_sociais + Taxa_conversao_online,data=dados)
+summary(modelo1)
+```
+
+O modelo 1 tem R² igual a 0,7, ou seja 70% da variação no volume de vendas é explicado por apenas essas duas variáveis.
+
+```{r}
+print(modelo1 %>% tbl_regression() %>% as_tibble())
+```
+
+```{r}
+vif(modelo1)
+```
+
+VIF é uma medida que testa multicolinearidade em modelos, sendo valores acima de 10 considerados problemas sérios [2].
+
+A Taxa_conversao_online apresenta um VIF muito próximo de 1, indicando que não tem multicolinearidade com as outras. Já as duas outras medidas usadas no modelo 1 apresentam VIFs extremamente altos de cerca de 15,68, indicando novamente a grande correlação entre essas variáveis, que pode ser problemática.
+
+Esse resultado confirma o que, intuitivamente, já era de se esperar, que Alcance_midias_sociais e Investimento_marketing fossem relacionadas, já que uma deve levar a outra.
+
+Para simplificar o modelo, evitar redundâncias e aumentar a estabilidade do modelo, vamos análisar qual das variáveis devemos remover.
+
+### Modelo 2 - Removendo alcance
+
+```{r}
+modelo2 <- lm(formula = Vendas ~ Investimento_marketing + Taxa_conversao_online, data = dados)
+summary(modelo2)
+```
+
+Retirando o alcance temos uma pequena diferença, trazendo um R² ligeiramente menor de 0.6815.
+
+```{r}
+vif(modelo2)
+```
+
+O VIF do modelo 2 é significante mente menor que o do modelo 3.
+
+Em `Investimento_marketing` e em `Taxa_conversao_online` agora temos um VIF muito proximo de 1, indicando que eles não tem correlação. Esse pode ser um modelo melhor já que evita usar variáveis que possuem correlação.
+
+### Modelo 3 - Removendo investimentos
+
+```{r}
+modelo3 <- lm(formula = Vendas ~ Alcance_midias_sociais + Taxa_conversao_online, data = dados)
+summary(modelo3)
+```
+
+Removendo os investimentos também, temos um R² de 0.705.
+
+```{r}
+vif(modelo3)
+```
+
+No modelo 3 também os valores de VIF foram ainda menores que os modelos do modelo 2, também muito próximos de 1.
+
+## Escolhendo o melhor modelo
+
+O modelo 3 tem praticamente a mesma significância do modelo 1 (R² = 0,7045 no modelo 3 vs R² = 0,7069 no modelo 1) que é consideravelmente maior que a do modelo 2 (R² = 0,6734).
+
+```{r}
+AIC(modelo2, modelo3)
+```
+
+AIC(Akaike Information Criterion) é uma das principais ferramentas de comparação entre modelos no mesmo dataset, sendo uma "[...] medida surpreendentemente simples da variância média de valores fora da amostra"[1]
+> O menor AIC é melhor, indicando que o modelo perdeu menos informação em relação ao outro.
+
+Com ela, temos outros indício de que o modelo 3 é o mais adequado para a situação.
+
+```{r}
+str (anova(modelo1, modelo3))
+```
+
+Em contraponto, o teste ANOVA resultou em um p muito menor que 5%, indicando que o modelo 1(mais complexo) tem uma capacidade maior de explicar as vendas em comparação ao modelo 3, como vimos anteriormente com a comparação de seus R².
+
+Entretanto, o ANOVA testa apenas se o modelo é melhor para explicar a variável resposta do que utilizar a média, não considerando os possíveis malefícios de usar um modelo mais complexo pode trazer.
+
+Como visto nos testes anteriores, o modelo 1 ganha pouca melhoria no ajuste(<1%) com esse aumento de complexidade, logo vamos esolher o modelo 3 para continuar nossa análise.
+
+# Análisando o modelo escolhido
+
+```{r}
+plot(modelo3)
+```
+
+## Análise dos pressupostos
+
+### Do modelo original
+
+```{r}
+check_model(modelo1, title_size = 10, base_size = 8)
+```
+
+1. Verificação Preditiva Posterior
+
+A curva dos dados preditos (linha verde) está razoavelmente próxima da curva dos dados observados
+(linha azul).Tendo assim uma boa adequação geral do modelo.
+
+2. Linearidade
+
+Os pontos estão bem distribuídos em torno da linha zero. A linha de tendência verde está quase perfeitamente plana
+
+3. Homocedasticidade
+
+A dispersão dos pontos é bastante uniforme da esquerda para a direita. A linha de tendência verde é praticamente horizontal. Não há o formato de "cone" ou "funil" que indicaria um problema (heterocedasticidade).
+
+4. Normalidade dos Resíduos
+
+Os pontos se alinham quase perfeitamente com a linha reta. Há um pequeno desvio nos extremos, o que é muito comum e geralmente não é preocupante em conjuntos de dados grandes.
+
+5. Influência de Observações
+
+Existem alguns pontos numerados que se destacam por terem maior alavancagem (Leverage) ou resíduos maiores, como o ponto 1076. No entanto, todos os pontos estão bem dentro das linhas de contorno, o que significa que nenhum deles é considerado perigosamente influente.
+
+6. Multicolinearidade
+
+Mostra novamente os erros que já vimos, com um VIF **extremamente alto** de cerca de 15, dificultando a interpretação com o modelo.
+
+### Do modelo selecionado
+
+```{r}
+check_model(modelo3, title_size = 10, base_size = 8)
+```
+
+Como o modelo 3 é simples, o gráfico de VIF foi omitido, justamente por não ter multicolinearidade nesse modelo, resolvendo esse problema em relação ao primeiro.
+
+Nas influências de observações o único ponto que se encontrava fora da curva agora está contido nela, mostrando como o modelo 3 é mais estável, exatamente o que queríamos.
+
+Fora essas melhorias, o modelo 3 se mantém tão bom quanto o primeiro nas outras métricas, justificando novamente sua escolha.
+
+# Estimativa
+
+```{r}
+estimativa <- data.frame(Alcance_midias_sociais = 1000, Taxa_conversao_online = 1)
+
+predict(modelo3, newdata = estimativa, interval = "confidence")
+```
+
+Considerando uma périodo de tempo onde foram atingidas 1000000 pessoas nas redes sociais, se espera que aproximadamente 3849 peças sejam vendidas nesse mês, com 95% de confiança se espera que o valor esteja entre 3808 e 3890.
+
+## Intervalo de confiança
+
+| limite | valor |
+| - | - |
+| inferior | 3808|
+|superior | 3890|**bold text**
+
+
+Esse intervalo de 3808 a 3890 expressa a incerteza em torno da média esperada do consumo para
+domicílios com as características especificadas. Ele reflete apenas o erro associado à estimativa da
+média, e não à previsão de um valor individual.
+
+# Previsão
+
+```{r}
+estimativa <- data.frame(Alcance_midias_sociais = 1000, Taxa_conversao_online = 1000)
+
+predict(modelo3, newdata = estimativa, interval = "prediction")
+```
+
+Com 95% de confiança, espera-se que a quantidade de vendas de uma empresa com as características da seção 6 esteja entre 2960 e 4737. Esse intervalo de predição é mais amplo do que o intervalo de confiança para a média, pois leva em consideração a variabilidade individual das empresas, não apenas a incerteza da média.
+
+# Interpretação do modelo
+
+Os resultados expostos mostram que todas as variáveis selecionadas para o modelo são estatísticamente significativas ao nível de 5%, resultando em um modelo com R² ajustado de 0.705, que indica que 70% da variabilidade no volume de vendar é explicado pelas variáveis no modelo. Esse valor é consideravelmente alto especialmente considerando quantas variáveis possíveis existiam no dataset, escolhemos um conjunto muito pequeno e significativo.
+
+Análisando as variáveis incluídas:
+- `Alcance_midias_sociais` é a variável mais relevante para o modelo, mostrando como é importante esse meio de marketing para as lojas.
+
+- `Taxa_conversao_online` tem uma influência bem menor, mas ainda significativa, possivelmente indicando que as pessoas compram mais online do que presencial.
+
+Além disso, a análise dos pressupostos confirma que o modelo atende a todos os critério quase perfeitamente, sendo linear, independente de erros, atendendo a homocedasticidade e normalidade dos resíduos, com quase total ausência de multicolinearidade.
+
+# Conclusão
+
+O relatório teve como objetivo analisar os fatores que influenciam no volume de vendas de peças de roupas. Após a limpeza de dados foram selecionadas variáveis explicativas com base em critérios estatísticos e teóricos.
+
+O modelo de regressão linear múltipla selecionado (modelo 3) apresenta um bom ajuste (R² ajustado de 0.705) e atende aos pressupostos do modelo. A variável `Alcance_midias_sociais` apresenta uma influência significativa sobre o volume de vendas, com a variável `Taxa_conversao_online` tendo um impacto menor, mas considerável.
+
+Por último, fizemos ainda estimativas e predições com base no modelo final, fornecendo interpretações pontuais e intervalares
+
+# Referências bibliográficas
+
+1. *McElreath, Richard (2016). Statistical Rethinking: A Bayesian Course with Examples in R and Stan. [S.l.]: CRC Press. p. 189. ISBN 978-1-4822-5344-3. AIC provides a surprisingly simple estimate of the average out-of-sample deviance.*
+2.https://www.datacamp.com/pt/tutorial/variance-inflation-factor
