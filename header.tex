@@ -1,0 +1,47 @@
+% ==========================
+% Estilos para títulos (KOMA)
+% ==========================
+
+% Seções principais - azul, grande, sem serifa
+\setkomafont{section}{\Large\bfseries\sffamily\color{blue}}
+
+% Subseções - cinza escuro, sem serifa
+\setkomafont{subsection}{\large\sffamily\color{darkgray}}
+
+% Subsubseções - cinza médio
+\setkomafont{subsubsection}{\normalsize\sffamily\color{gray}}
+
+% ==========================
+% Links coloridos
+% ==========================
+\usepackage{hyperref}   % adiciona suporte a links
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=blue
+}
+
+% ==========================
+% Tabelas mais bonitas
+% ==========================
+\usepackage{booktabs}   % linhas mais elegantes
+\usepackage{array}      % controle de colunas
+\renewcommand{\arraystretch}{1.2} % aumenta o espaçamento vertical nas tabelas
+
+% ==========================
+% Espaçamento entre parágrafos
+% ==========================
+\setlength{\parskip}{0.8em}
+\setlength{\parindent}{0pt}
+
+% ==========================
+% Cabeçalho e rodapé (opcional)
+% ==========================
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} % limpa
+\fancyhead[L]{Análise - Vendas de Vestuário}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}

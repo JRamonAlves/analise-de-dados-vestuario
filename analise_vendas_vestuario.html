@@ -113,10 +113,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#do-modelo-selecionado" id="toc-do-modelo-selecionado" class="nav-link" data-scroll-target="#do-modelo-selecionado"><span class="header-section-number">5.1.2</span> Do modelo selecionado</a></li>
   </ul></li>
   </ul></li>
-  <li><a href="#estimativa" id="toc-estimativa" class="nav-link" data-scroll-target="#estimativa"><span class="header-section-number">6</span> Estimativa</a>
-  <ul class="collapse">
-  <li><a href="#intervalo-de-confiança" id="toc-intervalo-de-confiança" class="nav-link" data-scroll-target="#intervalo-de-confiança"><span class="header-section-number">6.1</span> Intervalo de confiança</a></li>
-  </ul></li>
+  <li><a href="#estimativa" id="toc-estimativa" class="nav-link" data-scroll-target="#estimativa"><span class="header-section-number">6</span> Estimativa</a></li>
   <li><a href="#previsão" id="toc-previsão" class="nav-link" data-scroll-target="#previsão"><span class="header-section-number">7</span> Previsão</a></li>
   <li><a href="#interpretação-do-modelo" id="toc-interpretação-do-modelo" class="nav-link" data-scroll-target="#interpretação-do-modelo"><span class="header-section-number">8</span> Interpretação do modelo</a></li>
   <li><a href="#conclusão" id="toc-conclusão" class="nav-link" data-scroll-target="#conclusão"><span class="header-section-number">9</span> Conclusão</a></li>
@@ -417,11 +414,8 @@ Taxa_conversao_online    -0.002318442 -0.0162387294          1.0000000000</code>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>corrplot 0.95 loaded</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(cor_matrix, <span class="at">method =</span> <span class="st">"color"</span>, <span class="at">addCoef.col =</span> <span class="st">"black"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(cor_matrix, <span class="at">method =</span> <span class="st">"color"</span>, <span class="at">addCoef.col =</span> <span class="st">"black"</span>, <span class="at">tl.cex =</span> <span class="fl">0.7</span>, <span class="at">number.cex =</span> <span class="fl">0.9</span>, <span class="at">tl.col =</span> <span class="st">"black"</span>, <span class="at">tl.srt =</span> <span class="dv">45</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -438,8 +432,8 @@ Taxa_conversao_online    -0.002318442 -0.0162387294          1.0000000000</code>
 <section id="análise-entre-vendas-e-a-presença-de-campanha-com-influenciadores" class="level3" data-number="3.2.1">
 <h3 data-number="3.2.1" class="anchored" data-anchor-id="análise-entre-vendas-e-a-presença-de-campanha-com-influenciadores"><span class="header-section-number">3.2.1</span> Análise entre vendas e a presença de campanha com influenciadores</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dados, <span class="fu">aes</span>(<span class="at">x =</span> Campanha_influenciadores, <span class="at">y =</span> Vendas)) <span class="sc">+</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dados, <span class="fu">aes</span>(<span class="at">x =</span> Campanha_influenciadores, <span class="at">y =</span> Vendas)) <span class="sc">+</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -453,8 +447,8 @@ Taxa_conversao_online    -0.002318442 -0.0162387294          1.0000000000</code>
 <section id="análise-entre-vendas-e-a-estação-análisada" class="level3" data-number="3.2.2">
 <h3 data-number="3.2.2" class="anchored" data-anchor-id="análise-entre-vendas-e-a-estação-análisada"><span class="header-section-number">3.2.2</span> Análise entre vendas e a estação análisada</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dados, <span class="fu">aes</span>(<span class="at">x =</span> Estacao, <span class="at">y =</span> Vendas)) <span class="sc">+</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dados, <span class="fu">aes</span>(<span class="at">x =</span> Estacao, <span class="at">y =</span> Vendas)) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -477,8 +471,8 @@ Taxa_conversao_online    -0.002318442 -0.0162387294          1.0000000000</code>
 <section id="modelo-1---investimento-e-alcance" class="level3" data-number="4.1.1">
 <h3 data-number="4.1.1" class="anchored" data-anchor-id="modelo-1---investimento-e-alcance"><span class="header-section-number">4.1.1</span> Modelo 1 - Investimento e Alcance</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>modelo1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Vendas <span class="sc">~</span> Investimento_marketing <span class="sc">+</span> Alcance_midias_sociais <span class="sc">+</span> Taxa_conversao_online,<span class="at">data=</span>dados)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo1)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>modelo1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Vendas <span class="sc">~</span> Investimento_marketing <span class="sc">+</span> Alcance_midias_sociais <span class="sc">+</span> Taxa_conversao_online,<span class="at">data=</span>dados)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo1)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -505,7 +499,7 @@ F-statistic: 916.9 on 3 and 1136 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>O modelo 1 tem R² igual a 0,7, ou seja 70% da variação no volume de vendas é explicado por apenas essas duas variáveis.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(modelo1 <span class="sc">%&gt;%</span> <span class="fu">tbl_regression</span>() <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>())</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(modelo1 <span class="sc">%&gt;%</span> <span class="fu">tbl_regression</span>() <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>())</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 4
   `**Characteristic**`   `**Beta**` `**95% CI**` `**p-value**`
@@ -516,7 +510,7 @@ F-statistic: 916.9 on 3 and 1136 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(modelo1)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(modelo1)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Investimento_marketing Alcance_midias_sociais  Taxa_conversao_online 
              15.713379              15.711495               1.002064 </code></pre>
@@ -530,8 +524,8 @@ F-statistic: 916.9 on 3 and 1136 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="modelo-2---removendo-alcance" class="level3" data-number="4.1.2">
 <h3 data-number="4.1.2" class="anchored" data-anchor-id="modelo-2---removendo-alcance"><span class="header-section-number">4.1.2</span> Modelo 2 - Removendo alcance</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>modelo2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> Vendas <span class="sc">~</span> Investimento_marketing <span class="sc">+</span> Taxa_conversao_online, <span class="at">data =</span> dados)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo2)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>modelo2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> Vendas <span class="sc">~</span> Investimento_marketing <span class="sc">+</span> Taxa_conversao_online, <span class="at">data =</span> dados)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo2)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -557,7 +551,7 @@ F-statistic:  1220 on 2 and 1137 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>Retirando o alcance temos uma pequena diferença, trazendo um R² ligeiramente menor de 0.6815.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(modelo2)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(modelo2)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Investimento_marketing  Taxa_conversao_online 
                1.00012                1.00012 </code></pre>
@@ -569,8 +563,8 @@ F-statistic:  1220 on 2 and 1137 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="modelo-3---removendo-investimentos" class="level3" data-number="4.1.3">
 <h3 data-number="4.1.3" class="anchored" data-anchor-id="modelo-3---removendo-investimentos"><span class="header-section-number">4.1.3</span> Modelo 3 - Removendo investimentos</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>modelo3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> Vendas <span class="sc">~</span> Alcance_midias_sociais <span class="sc">+</span> Taxa_conversao_online, <span class="at">data =</span> dados)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo3)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>modelo3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> Vendas <span class="sc">~</span> Alcance_midias_sociais <span class="sc">+</span> Taxa_conversao_online, <span class="at">data =</span> dados)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo3)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -596,7 +590,7 @@ F-statistic:  1358 on 2 and 1137 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>Removendo os investimentos também, temos um R² de 0.705.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(modelo3)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(modelo3)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Alcance_midias_sociais  Taxa_conversao_online 
                      1                      1 </code></pre>
@@ -609,17 +603,20 @@ F-statistic:  1358 on 2 and 1137 DF,  p-value: &lt; 2.2e-16</code></pre>
 <h2 data-number="4.2" class="anchored" data-anchor-id="escolhendo-o-melhor-modelo"><span class="header-section-number">4.2</span> Escolhendo o melhor modelo</h2>
 <p>O modelo 3 tem praticamente a mesma significância do modelo 1 (R² = 0,7045 no modelo 3 vs R² = 0,7069 no modelo 1) que é consideravelmente maior que a do modelo 2 (R² = 0,6734).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(modelo2, modelo3)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(modelo2, modelo3)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        df      AIC
 modelo2  4 17242.28
 modelo3  4 17157.20</code></pre>
 </div>
 </div>
-<p>AIC(Akaike Information Criterion) é uma das principais ferramentas de comparação entre modelos no mesmo dataset, sendo uma “[…] medida surpreendentemente simples da variância média de valores fora da amostra”[1] &gt; O menor AIC é melhor, indicando que o modelo perdeu menos informação em relação ao outro.</p>
+<p>AIC(Akaike Information Criterion) é uma das principais ferramentas de comparação entre modelos no mesmo dataset, sendo uma “[…] medida surpreendentemente simples da variância média de valores fora da amostra”[1]</p>
+<blockquote class="blockquote">
+<p>O menor AIC é melhor, indicando que o modelo perdeu menos informação em relação ao outro.</p>
+</blockquote>
 <p>Com ela, temos outros indício de que o modelo 3 é o mais adequado para a situação.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span> (<span class="fu">anova</span>(modelo1, modelo3))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span> (<span class="fu">anova</span>(modelo1, modelo3))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Classes 'anova' and 'data.frame':   2 obs. of  6 variables:
  $ Res.Df   : num  1136 1137
@@ -632,6 +629,10 @@ modelo3  4 17157.20</code></pre>
 </div>
 </div>
 <p>Em contraponto, o teste ANOVA resultou em um p muito menor que 5%, indicando que o modelo 1(mais complexo) tem uma capacidade maior de explicar as vendas em comparação ao modelo 3, como vimos anteriormente com a comparação de seus R².</p>
+<p>Conforme o livro do Bussab e Morettin (2024, p.&nbsp;362):</p>
+<blockquote class="blockquote">
+<p>“Essas informações são agrupadas numa única tabela, conhecida pelo nome de ANOVA (abreviação de ANalysis Of VAriance) … Na primeira coluna, temos as descrições das diferentes somas de quadrados, tecnicamente indicadas por fontes de variação (F.V.). Os graus de liberdade (g.l.) da segunda coluna estão associados às respectivas somas de quadrados, sendo que o número de g.l. da SQEnt é obtido por subtração. Falaremos abaixo sobre QMEnt e a razão F = QMEnt/QMDen.”[3]</p>
+</blockquote>
 <p>Entretanto, o ANOVA testa apenas se o modelo é melhor para explicar a variável resposta do que utilizar a média, não considerando os possíveis malefícios de usar um modelo mais complexo pode trazer.</p>
 <p>Como visto nos testes anteriores, o modelo 1 ganha pouca melhoria no ajuste(&lt;1%) com esse aumento de complexidade, logo vamos esolher o modelo 3 para continuar nossa análise.</p>
 </section>
@@ -639,7 +640,7 @@ modelo3  4 17157.20</code></pre>
 <section id="análisando-o-modelo-escolhido" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Análisando o modelo escolhido</h1>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(modelo3)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(modelo3)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -674,7 +675,7 @@ modelo3  4 17157.20</code></pre>
 <section id="do-modelo-original" class="level3" data-number="5.1.1">
 <h3 data-number="5.1.1" class="anchored" data-anchor-id="do-modelo-original"><span class="header-section-number">5.1.1</span> Do modelo original</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(modelo1, <span class="at">title_size =</span> <span class="dv">10</span>, <span class="at">base_size =</span> <span class="dv">8</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(modelo1, <span class="at">title_size =</span> <span class="dv">10</span>, <span class="at">base_size =</span> <span class="dv">5</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -711,7 +712,7 @@ modelo3  4 17157.20</code></pre>
 <section id="do-modelo-selecionado" class="level3" data-number="5.1.2">
 <h3 data-number="5.1.2" class="anchored" data-anchor-id="do-modelo-selecionado"><span class="header-section-number">5.1.2</span> Do modelo selecionado</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(modelo3, <span class="at">title_size =</span> <span class="dv">10</span>, <span class="at">base_size =</span> <span class="dv">8</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(modelo3, <span class="at">title_size =</span> <span class="dv">10</span>, <span class="at">base_size =</span> <span class="dv">5</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -728,58 +729,78 @@ modelo3  4 17157.20</code></pre>
 </section>
 <section id="estimativa" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> Estimativa</h1>
+<p>Para essa seção criamos duas observações com as seguintes características:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>estimativa <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Alcance_midias_sociais =</span> <span class="dv">1000</span>, <span class="at">Taxa_conversao_online =</span> <span class="dv">1</span>)</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(modelo3, <span class="at">newdata =</span> estimativa, <span class="at">interval =</span> <span class="st">"confidence"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>lojaA <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Alcance_midias_sociais =</span> <span class="dv">1000</span>, <span class="at">Taxa_conversao_online =</span> <span class="dv">1</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>lojaB <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Alcance_midias_sociais =</span> <span class="dv">750</span>, <span class="at">Taxa_conversao_online =</span> <span class="fl">1.5</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(modelo3, <span class="at">newdata =</span> lojaA, <span class="at">interval =</span> <span class="st">"confidence"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      fit      lwr     upr
 1 3719.86 3655.861 3783.86</code></pre>
 </div>
 </div>
-<p>Considerando uma périodo de tempo onde foram atingidas 1000000 pessoas nas redes sociais, se espera que aproximadamente 3849 peças sejam vendidas nesse mês, com 95% de confiança se espera que o valor esteja entre 3808 e 3890.</p>
-<section id="intervalo-de-confiança" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="intervalo-de-confiança"><span class="header-section-number">6.1</span> Intervalo de confiança</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(modelo3, <span class="at">newdata =</span> lojaB, <span class="at">interval =</span> <span class="st">"confidence"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      fit      lwr      upr
+1 3010.11 2966.048 3054.172</code></pre>
+</div>
+</div>
+<p>O resultado da predição nessas duas lojas é:</p>
+<p>Loja Valor pontual Limite inferior Limite Superior Loja A 3179 3656 3784 Loja B 3010 20966 3054 Como é de se esperar, a maior taxa de conversão da loja B não é suficiente pra compensar sua perda de alcance nas mídias sociais.</p>
+</section>
+<section id="previsão" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Previsão</h1>
+<p>Fazendo uma previsão com as mesmas lojas da seção 6 temos:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(modelo3, <span class="at">newdata =</span> lojaA, <span class="at">interval =</span> <span class="st">"prediction"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      fit      lwr      upr
+1 3719.86 2839.267 4600.454</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(modelo3, <span class="at">newdata =</span> lojaB, <span class="at">interval =</span> <span class="st">"prediction"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      fit      lwr     upr
+1 3010.11 2130.741 3889.48</code></pre>
+</div>
+</div>
 <table class="caption-top table">
 <thead>
 <tr class="header">
-<th>limite</th>
-<th>valor</th>
+<th>Loja</th>
+<th>Valor pontual</th>
+<th>Limite inferior</th>
+<th>Limite Superior</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>inferior</td>
-<td>3808</td>
+<td>Loja A</td>
+<td>3179</td>
+<td>2839</td>
+<td>4600</td>
 </tr>
 <tr class="even">
-<td>superior</td>
-<td>3890</td>
+<td>Loja B</td>
+<td>3010</td>
+<td>2131</td>
+<td>3889</td>
 </tr>
 </tbody>
 </table>
-<p>Esse intervalo de 3808 a 3890 expressa a incerteza em torno da média esperada do consumo para domicílios com as características especificadas. Ele reflete apenas o erro associado à estimativa da média, e não à previsão de um valor individual.</p>
-</section>
-</section>
-<section id="previsão" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> Previsão</h1>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>estimativa <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Alcance_midias_sociais =</span> <span class="dv">1000</span>, <span class="at">Taxa_conversao_online =</span> <span class="dv">1000</span>)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(modelo3, <span class="at">newdata =</span> estimativa, <span class="at">interval =</span> <span class="st">"prediction"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>       fit      lwr      upr
-1 76873.48 48896.25 104850.7</code></pre>
-</div>
-</div>
-<p>Com 95% de confiança, espera-se que a quantidade de vendas de uma empresa com as características da seção 6 esteja entre 2960 e 4737. Esse intervalo de predição é mais amplo do que o intervalo de confiança para a média, pois leva em consideração a variabilidade individual das empresas, não apenas a incerteza da média.</p>
+<p>Esse intervalo de predição é mais amplo do que o intervalo de confiança para a média, pois leva em consideração a variabilidade individual das empresas, não apenas a incerteza da média.</p>
 </section>
 <section id="interpretação-do-modelo" class="level1" data-number="8">
 <h1 data-number="8"><span class="header-section-number">8</span> Interpretação do modelo</h1>
 <p>Os resultados expostos mostram que todas as variáveis selecionadas para o modelo são estatísticamente significativas ao nível de 5%, resultando em um modelo com R² ajustado de 0.705, que indica que 70% da variabilidade no volume de vendar é explicado pelas variáveis no modelo. Esse valor é consideravelmente alto especialmente considerando quantas variáveis possíveis existiam no dataset, escolhemos um conjunto muito pequeno e significativo.</p>
-<p>Análisando as variáveis incluídas: - <code>Alcance_midias_sociais</code> é a variável mais relevante para o modelo, mostrando como é importante esse meio de marketing para as lojas.</p>
+<p>Análisando as variáveis incluídas:</p>
 <ul>
-<li><code>Taxa_conversao_online</code> tem uma influência bem menor, mas ainda significativa, possivelmente indicando que as pessoas compram mais online do que presencial.</li>
+<li><p><code>Alcance_midias_sociais</code> é a variável mais relevante para o modelo, mostrando como é importante esse meio de marketing para as lojas.</p></li>
+<li><p><code>Taxa_conversao_online</code> tem uma influência bem menor, mas ainda significativa, possivelmente indicando que as pessoas compram mais online do que presencial.</p></li>
 </ul>
 <p>Além disso, a análise dos pressupostos confirma que o modelo atende a todos os critério quase perfeitamente, sendo linear, independente de erros, atendendo a homocedasticidade e normalidade dos resíduos, com quase total ausência de multicolinearidade.</p>
 </section>
@@ -792,7 +813,9 @@ modelo3  4 17157.20</code></pre>
 <section id="referências-bibliográficas" class="level1" data-number="10">
 <h1 data-number="10"><span class="header-section-number">10</span> Referências bibliográficas</h1>
 <ol type="1">
-<li><em>McElreath, Richard (2016). Statistical Rethinking: A Bayesian Course with Examples in R and Stan. [S.l.]: CRC Press. p.&nbsp;189. ISBN 978-1-4822-5344-3. AIC provides a surprisingly simple estimate of the average out-of-sample deviance.</em> 2.https://www.datacamp.com/pt/tutorial/variance-inflation-factor</li>
+<li><p><em>McElreath, Richard (2016). Statistical Rethinking: A Bayesian Course with Examples in R and Stan. [S.l.]: CRC Press. p.&nbsp;189. ISBN 978-1-4822-5344-3. AIC provides a surprisingly simple estimate of the average out-of-sample deviance.</em></p></li>
+<li><p><em>FATOR de Inflação de Variância (VIF). DataCamp, 18 nov. 2024. Disponível em: https://www.datacamp.com/pt/tutorial/variance-inflation-factor. Acesso em: 24 set. 2025.</em></p></li>
+<li><p><em>BUSSAB, W. O.; MORETTIN, P. A. Estatística básica. 10. ed.&nbsp;São Paulo: Saraiva Uni, 2024.</em></p></li>
 </ol>
 </section>
 

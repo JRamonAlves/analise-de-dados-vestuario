@@ -88,6 +88,7 @@ Nossa interpretação desse dataset é que cada linha é referente a uma diferen
 
 ## Entre variáveis numéricas
 
+
 ```{r} 
 numeric_vars <- dados %>% select(where(is.numeric))
 cor_matrix <- cor(numeric_vars, use = "pairwise.complete.obs")
@@ -96,7 +97,7 @@ print(cor_matrix)
 
 ```{r}
 library(corrplot)
-corrplot(cor_matrix, method = "color", addCoef.col = "black")
+corrplot(cor_matrix, method = "color", addCoef.col = "black", tl.cex = 0.7, number.cex = 0.9, tl.col = "black", tl.srt = 45)
 ```
 
 Encontramos algumas corelações entre nossa variável resposta (`Vendas`) e as demais, principalmente entre ela, `Investimento_marketing` e `Alcance_midias_sociais`, com valores de 82% e 84% respectivamente. Surpreendetemente as demais colunas tem correlações **extremamente fracas** com `Vendas`, indicando que não afetam o volume de vendas significativamente.
@@ -199,6 +200,7 @@ AIC(modelo2, modelo3)
 ```
 
 AIC(Akaike Information Criterion) é uma das principais ferramentas de comparação entre modelos no mesmo dataset, sendo uma "[...] medida surpreendentemente simples da variância média de valores fora da amostra"[1]
+
 > O menor AIC é melhor, indicando que o modelo perdeu menos informação em relação ao outro.
 
 Com ela, temos outros indício de que o modelo 3 é o mais adequado para a situação.
@@ -208,6 +210,10 @@ str (anova(modelo1, modelo3))
 ```
 
 Em contraponto, o teste ANOVA resultou em um p muito menor que 5%, indicando que o modelo 1(mais complexo) tem uma capacidade maior de explicar as vendas em comparação ao modelo 3, como vimos anteriormente com a comparação de seus R².
+
+Conforme o livro do Bussab e Morettin (2024, p. 362):
+
+  >"Essas informações são agrupadas numa única tabela, conhecida pelo nome de ANOVA (abreviação de ANalysis Of VAriance) ... Na primeira coluna, temos as descrições das diferentes somas de quadrados, tecnicamente indicadas por fontes de variação (F.V.). Os graus de liberdade (g.l.) da segunda coluna estão associados às respectivas somas de quadrados, sendo que o número de g.l. da SQEnt é obtido por subtração. Falaremos abaixo sobre QMEnt e a razão F = QMEnt/QMDen."[3]
 
 Entretanto, o ANOVA testa apenas se o modelo é melhor para explicar a variável resposta do que utilizar a média, não considerando os possíveis malefícios de usar um modelo mais complexo pode trazer.
 
@@ -224,7 +230,7 @@ plot(modelo3)
 ### Do modelo original
 
 ```{r}
-check_model(modelo1, title_size = 10, base_size = 8)
+check_model(modelo1, title_size = 10, base_size = 5)
 ```
 
 1. Verificação Preditiva Posterior
@@ -255,7 +261,7 @@ Mostra novamente os erros que já vimos, com um VIF **extremamente alto** de cer
 ### Do modelo selecionado
 
 ```{r}
-check_model(modelo3, title_size = 10, base_size = 8)
+check_model(modelo3, title_size = 10, base_size = 5)
 ```
 
 Como o modelo 3 é simples, o gráfico de VIF foi omitido, justamente por não ter multicolinearidade nesse modelo, resolvendo esse problema em relação ao primeiro.
@@ -266,41 +272,49 @@ Fora essas melhorias, o modelo 3 se mantém tão bom quanto o primeiro nas outra
 
 # Estimativa
 
-```{r}
-estimativa <- data.frame(Alcance_midias_sociais = 1000, Taxa_conversao_online = 1)
+Para essa seção criamos duas observações com as seguintes características:
 
-predict(modelo3, newdata = estimativa, interval = "confidence")
+```{r}
+lojaA <- data.frame(Alcance_midias_sociais = 1000, Taxa_conversao_online = 1)
+lojaB <- data.frame(Alcance_midias_sociais = 750, Taxa_conversao_online = 1.5)
+```
+```{r}
+predict(modelo3, newdata = lojaA, interval = "confidence")
+```
+```{r}
+predict(modelo3, newdata = lojaB, interval = "confidence")
 ```
 
-Considerando uma périodo de tempo onde foram atingidas 1000000 pessoas nas redes sociais, se espera que aproximadamente 3849 peças sejam vendidas nesse mês, com 95% de confiança se espera que o valor esteja entre 3808 e 3890.
+O resultado da predição nessas duas lojas é:
 
-## Intervalo de confiança
-
-| limite | valor |
-| - | - |
-| inferior | 3808|
-|superior | 3890|**bold text**
-
-
-Esse intervalo de 3808 a 3890 expressa a incerteza em torno da média esperada do consumo para
-domicílios com as características especificadas. Ele reflete apenas o erro associado à estimativa da
-média, e não à previsão de um valor individual.
+Loja	Valor pontual	Limite inferior	Limite Superior
+Loja A	3179	3656	3784
+Loja B	3010	20966	3054
+Como é de se esperar, a maior taxa de conversão da loja B não é suficiente pra compensar sua perda de alcance nas mídias sociais.
 
 # Previsão
-
+Fazendo uma previsão com as mesmas lojas da seção 6 temos:
 ```{r}
-estimativa <- data.frame(Alcance_midias_sociais = 1000, Taxa_conversao_online = 1000)
-
-predict(modelo3, newdata = estimativa, interval = "prediction")
+predict(modelo3, newdata = lojaA, interval = "prediction")
+```
+```{r}
+predict(modelo3, newdata = lojaB, interval = "prediction")
 ```
 
-Com 95% de confiança, espera-se que a quantidade de vendas de uma empresa com as características da seção 6 esteja entre 2960 e 4737. Esse intervalo de predição é mais amplo do que o intervalo de confiança para a média, pois leva em consideração a variabilidade individual das empresas, não apenas a incerteza da média.
+| Loja | Valor pontual| Limite inferior | Limite Superior |
+| - | - | - | -|
+| Loja A | 3179 | 2839 | 4600 |
+| Loja B | 3010 | 2131 | 3889 |
+
+
+Esse intervalo de predição é mais amplo do que o intervalo de confiança para a média, pois leva em consideração a variabilidade individual das empresas, não apenas a incerteza da média.
 
 # Interpretação do modelo
 
 Os resultados expostos mostram que todas as variáveis selecionadas para o modelo são estatísticamente significativas ao nível de 5%, resultando em um modelo com R² ajustado de 0.705, que indica que 70% da variabilidade no volume de vendar é explicado pelas variáveis no modelo. Esse valor é consideravelmente alto especialmente considerando quantas variáveis possíveis existiam no dataset, escolhemos um conjunto muito pequeno e significativo.
 
 Análisando as variáveis incluídas:
+
 - `Alcance_midias_sociais` é a variável mais relevante para o modelo, mostrando como é importante esse meio de marketing para as lojas.
 
 - `Taxa_conversao_online` tem uma influência bem menor, mas ainda significativa, possivelmente indicando que as pessoas compram mais online do que presencial.
@@ -318,4 +332,7 @@ Por último, fizemos ainda estimativas e predições com base no modelo final, f
 # Referências bibliográficas
 
 1. *McElreath, Richard (2016). Statistical Rethinking: A Bayesian Course with Examples in R and Stan. [S.l.]: CRC Press. p. 189. ISBN 978-1-4822-5344-3. AIC provides a surprisingly simple estimate of the average out-of-sample deviance.*
-2.https://www.datacamp.com/pt/tutorial/variance-inflation-factor
+
+2. *FATOR de Inflação de Variância (VIF). DataCamp, 18 nov. 2024. Disponível em: https://www.datacamp.com/pt/tutorial/variance-inflation-factor. Acesso em: 24 set. 2025.*
+
+3. *BUSSAB, W. O.; MORETTIN, P. A. Estatística básica. 10. ed. São Paulo: Saraiva Uni, 2024.*
